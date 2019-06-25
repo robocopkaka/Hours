@@ -63,4 +63,19 @@ describe Mileage do
       expect(Mileage.with_clients.count).to eq(1)
     end
   end
+
+  describe "max allowed distance" do
+    context "when user enters a distance greater than the maximum allowed" do
+      let!(:project) { create(:project) }
+      let!(:user) { create(:user) }
+      let!(:mileage) { create(:mileage, project: project, user: user) }
+      it "returns an error" do
+        mileage.value = 110
+        expect(mileage).to_not be_valid
+        expect(mileage.errors[:value]).to include "over allowed distance"
+        mileage.value = 90
+        expect(mileage).to be_valid
+      end
+    end
+  end
 end

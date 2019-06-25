@@ -34,6 +34,7 @@ class Hour < Entry
   }
 
   before_save :set_tags_from_description
+  before_validation :allowed_hours
 
   def tag_list
     tags.map(&:name).join(", ")
@@ -41,6 +42,10 @@ class Hour < Entry
 
   def self.query(params, includes = nil)
     EntryQuery.new(self.includes(includes).by_date, params, "hours").filter
+  end
+
+  def allowed_hours
+    errors.add(:value, "over allowed hours") if value > project.max_hours
   end
 
   private

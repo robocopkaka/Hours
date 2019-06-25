@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224115957) do
+ActiveRecord::Schema.define(version: 20190624232033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,11 +53,11 @@ ActiveRecord::Schema.define(version: 20150224115957) do
   end
 
   create_table "clients", force: :cascade do |t|
-    t.string   "name",              default: "", null: false
-    t.string   "description",       default: ""
+    t.string   "name",                        default: "", null: false
+    t.string   "description",                 default: ""
     t.string   "logo_file_name"
     t.string   "logo_content_type"
-    t.integer  "logo_file_size"
+    t.integer  "logo_file_size",    limit: 8
     t.datetime "logo_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20150224115957) do
     t.integer  "client_id"
     t.boolean  "archived",    default: false, null: false
     t.text     "description"
+    t.integer  "max_hours",   default: 24
   end
 
   add_index "projects", ["archived"], name: "index_projects_on_archived", using: :btree
