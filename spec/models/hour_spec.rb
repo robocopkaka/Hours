@@ -128,4 +128,20 @@ describe Hour do
       expect(entries).to include(entry_3, entry_4, entry_5)
     end
   end
+
+  describe "max allowed hours" do
+    context "when user enters more than the allowed number of hours" do
+      let!(:project) { create(:project, max_hours: 16) }
+      let!(:category) { create(:category) }
+      let!(:user) { create(:user) }
+      let!(:hour) { create(:hour, project: project, category: category, user: user) }
+      it "returns an error" do
+        hour.value = 17
+        expect(hour).to_not be_valid
+        expect(hour.errors[:value]).to include "over allowed hours"
+        hour.value = 10
+        expect(hour).to be_valid
+      end
+    end
+  end
 end

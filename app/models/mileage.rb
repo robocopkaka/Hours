@@ -20,7 +20,15 @@ class Mileage < Entry
     where.not("projects.client_id" => nil).joins(:project)
   }
 
+  before_validation :allowed_distance
+
+  MAX_ALLOWED_DISTANCE = 100
+
   def self.query(params, includes = nil)
     EntryQuery.new(self.includes(includes).by_date, params, "mileages").filter
+  end
+
+  def allowed_distance
+    errors.add(:value, "over allowed distance") if value > MAX_ALLOWED_DISTANCE
   end
 end

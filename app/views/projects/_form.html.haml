@@ -4,6 +4,7 @@
     = f.input :name, required: true
     = f.input :description, as: :text, input_html: { rows: 5 }
     = f.input :budget, as: :integer
+    = f.input :max_hours, as: :integer
     = f.association :client, required: false, collection: Client.by_name, placeholder: t("project.form.client"), include_blank: t("project.form.no_client")
     = f.label :billable
     = f.input :billable, as: :switch, label: false
